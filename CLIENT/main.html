@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Generador de Datos Sintéticos con ChatGPT</title>
+</head>
+<body>
+    <h1>Generador de Datos Sintéticos con ChatGPT</h1>
+    <form id="dataForm">
+        <label for="schema">Esquema JSON (ejemplo: {"name": "string", "age": "integer"}):</label><br>
+        <textarea id="schema" name="schema" rows="5" cols="50">{"name": "string", "age": "integer"}</textarea><br>
+        <label for="count">Cantidad:</label><br>
+        <input type="number" id="count" name="count" value="10"><br>
+        <label for="type">Tipo de salida:</label><br>
+        <select id="type" name="type">
+            <option value="json">JSON</option>
+            <option value="csv">CSV</option>
+        </select><br><br>
+        <button type="button" onclick="generateData()">Generar Datos</button>
+    </form>
+    <h2>Resultados:</h2>
+    <pre id="results"></pre>
+
+    <script>
+        function generateData() {
+            // Obtener datos del formulario
+            const schemaInput = document.getElementById('schema').value;
+            const countInput = document.getElementById('count').value;
+            const typeInput = document.getElementById('type').value;
+
+            // Convertir texto a JSON
+            const schema = JSON.parse(schemaInput);
+            const count = parseInt(countInput);
+            const type = typeInput;
+
+            // Datos para enviar
+            const data = {
+                schema: schema,
+                count: count,
+                type: type
+            };
+
+            // Configuración de la solicitud fetch
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            };
+
+            // Realizar la solicitud fetch al servidor
+            fetch('http://localhost:5000/generate_data', options)
+                .then(response => response.json())
+                .then(data => {
+                    // Mostrar los datos generados
+                    document.getElementById('results').textContent = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    // Mostrar error
+                    document.getElementById('results').textContent = 'Error: ' + error;
+                });
+        }
+    </script>
+</body>
+</html>
