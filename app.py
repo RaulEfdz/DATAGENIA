@@ -2,21 +2,20 @@ from flask import Flask, request, jsonify
 import os
 from dotenv import load_dotenv
 from flask_cors import CORS
-import openai
 
-# Cargar variables de entorno desde un archivo .env
-load_dotenv()
-
-# Configurar la clave de API de OpenAI
-openai.api_key = os.getenv("OPENAI_API_KEY")
-
-# Configurar la aplicación Flask y habilitar CORS
+# Set up Flask app and enable CORS
 app = Flask(__name__)
 CORS(app)
 
-# Definir rutas y métodos
+# Importing OpenAI and initializing the client
+from openai import OpenAI
+client = OpenAI()
+
+# Define routes and methods
+@app.route('/')
 @app.route('/generate_data', methods=['POST'])
 def generate_data():
+    
     data = request.json
     
     print('\n\n\n----------------------------------------------\n\n\n')
@@ -24,25 +23,30 @@ def generate_data():
     print('\n\n\n----------------------------------------------\n\n\n')
     
     roleSystem = "Eres un exporto en diseño de Json y csv, recibiras la infroma de schema, count, tipo(json o csv), esto se usara para generar la cantida de objeto que indique count unicamente debe retornar formato json o csv , y tampo debes retorna text que no sea eso"
-    completion = openai.ChatCompletion.create(
+    completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": roleSystem},
-            {"role": "user", "content": str(data)}
+            {"role": "user", "content":str(data) }
         ]
     )
+    
 
-    # Imprimir el primer mensaje de elección
+    # Printing the first choice message
     print('\n\n\n----------------------------------------------\n\n\n')
     response = completion.choices[0]
-    message = response['message']
-    messageContent = message['content']
+    message = response.message
+    messageContent = response.message.content
+    # print(message)
     print(messageContent)
     print('\n\n\n----------------------------------------------\n\n\n')
 
-    # Devolver la respuesta con la sintaxis JSON correcta
-    return jsonify({'response': messageContent})
+    # Correct response format with proper JSON syntax
+    return messageContent
 
+    
+# Main function to run the Flask app
 # Función principal para ejecutar la aplicación Flask
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
+
