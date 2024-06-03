@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import os
 from dotenv import load_dotenv
 from flask_cors import CORS
@@ -11,17 +11,20 @@ CORS(app)
 from openai import OpenAI
 client = OpenAI()
 
-# Define routes and methods
+# Define route for the home page to serve the HTML file
 @app.route('/')
+def home():
+    return render_template('index.html')
+
+# Define other routes and methods
 @app.route('/generate_data', methods=['POST'])
 def generate_data():
-    
     data = request.json
-    
+
     print('\n\n\n----------------------------------------------\n\n\n')
     print(data)
     print('\n\n\n----------------------------------------------\n\n\n')
-    
+
     roleSystem = "Eres un exporto en diseño de Json y csv, recibiras la infroma de schema, count, tipo(json o csv), esto se usara para generar la cantida de objeto que indique count unicamente debe retornar formato json o csv , y tampo debes retorna text que no sea eso"
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
@@ -30,7 +33,6 @@ def generate_data():
             {"role": "user", "content":str(data) }
         ]
     )
-    
 
     # Printing the first choice message
     print('\n\n\n----------------------------------------------\n\n\n')
@@ -44,9 +46,6 @@ def generate_data():
     # Correct response format with proper JSON syntax
     return messageContent
 
-    
 # Main function to run the Flask app
-# Función principal para ejecutar la aplicación Flask
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
-
