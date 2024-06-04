@@ -1,22 +1,21 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, send_from_directory, request, jsonify, render_template
 import os
 from dotenv import load_dotenv
 from flask_cors import CORS
-
-# Set up Flask app and enable CORS
-app = Flask(__name__)
-CORS(app)
-
-# Importing OpenAI and initializing the client
 from openai import OpenAI
+
+app = Flask(__name__, static_folder='static')
+CORS(app)
 client = OpenAI()
 
-# Define route for the home page to serve the HTML file
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return send_from_directory(app.static_folder, 'index.html')
 
-# Define other routes and methods
+@app.route('/<path:path>')
+def serve_static(path):
+    return send_from_directory(app.static_folder, path)
+
 @app.route('/generate_data', methods=['POST'])
 def generate_data():
     data = request.json
@@ -34,18 +33,10 @@ def generate_data():
         ]
     )
 
-    # Printing the first choice message
-    print('\n\n\n----------------------------------------------\n\n\n')
     response = completion.choices[0]
-    message = response.message
     messageContent = response.message.content
-    # print(message)
-    print(messageContent)
-    print('\n\n\n----------------------------------------------\n\n\n')
 
-    # Correct response format with proper JSON syntax
     return messageContent
 
-# Main function to run the Flask app
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
