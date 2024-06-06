@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from flask_cors import CORS
 from openai import OpenAI
+from roleSystem import roleSystem
 
 app = Flask(__name__, static_folder='static')
 CORS(app)
@@ -24,7 +25,7 @@ def generate_data():
     print(data)
     print('\n\n\n----------------------------------------------\n\n\n')
 
-    roleSystem = "Eres un exporto en diseño de Json y csv, recibiras la infroma de schema, count, tipo(json o csv), esto se usara para generar la cantida de objeto que indique count unicamente debe retornar formato json o csv , y tampo debes retorna text que no sea eso"
+     
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
