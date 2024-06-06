@@ -4,8 +4,8 @@ import { ExampleCode } from "./exampleCode";
 
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { tomorrowNight } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import './btn.css';
-import AceEditor from 'react-ace';
+import "./btn.css";
+import AceEditor from "react-ace";
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -42,7 +42,7 @@ function App() {
       const data = await testConnection();
       setResponse(JSON.stringify(data, null, 2));
     } catch (error) {
-  setResponse(error.message);
+      setResponse(error.message);
     } finally {
       setLoading(false);
     }
@@ -55,7 +55,7 @@ function App() {
 
   const downloadResponse = () => {
     const element = document.createElement("a");
-    const file = new Blob([String(response)], {type: 'application/json'});
+    const file = new Blob([String(response)], { type: "application/json" });
     element.href = URL.createObjectURL(file);
     element.download = "response.json";
     document.body.appendChild(element);
@@ -73,24 +73,45 @@ function App() {
               width={120}
               className="rounded-full p-2 px-3 bg-black"
             />
-            <h1 className="font-bold text-g h-full m-0 ml-5" style={{ fontSize: "2rem" }}>
+            <h1
+              className="font-bold text-g h-full m-0 ml-5"
+              style={{ fontSize: "2rem" }}
+            >
               DataGenAI!
             </h1>
           </div>
           <p className="text-justify">
-            DataGenAI es una aplicación web diseñada para facilitar la generación automática de datos basada en esquemas JSON.
+            DataGenAI es una aplicación web diseñada para facilitar la
+            generación automática de datos basada en esquemas JSON.
           </p>
+
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <span style={{ marginTop: "10px", fontWeight: "bold" }}>
+              {`string=>A`}
+            </span>
+            Strings que comienzan con la letra A.
+            <span style={{ marginTop: "10px", fontWeight: "bold" }}>
+              {`date>2000`}
+            </span>
+            Fechas posteriores al año 2000.
+          </div>
         </div>
 
         <div className="p-6 ">
           <form id="dataForm" className="space-y-0 shadow-1 p-2">
             <div>
-              <label htmlFor="schema" className="block text-lg font-medium text-black text-left uppercase ">
+              <label
+                htmlFor="schema"
+                className="block text-lg font-medium text-black text-left uppercase "
+              >
                 Esquema JSON
               </label>
               <div className="mt-2  mx-4">
-                <label htmlFor="inputcount" className="block text-gray-800 font-semibold text-sm">
-                  Cantidad
+                <label
+                  htmlFor="inputcount"
+                  className="block text-gray-800 font-semibold text-sm"
+                >
+                  Cantidad Min(2), Max(20)
                 </label>
                 <input
                   value={count}
@@ -98,12 +119,17 @@ function App() {
                   onChange={(e) => setCount(parseInt(e.target.value))}
                   id="count"
                   name="count"
+                  max={20}
+                  min={2}
                   className="border border-gray-200 text-sm w-small font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-10 m-0 p-[11px] focus:ring-5 ring-offset-5 ring-gray-900 outline-0"
                 />
               </div>
 
               <div className="mt-2  mx-4">
-                <label htmlFor="inputtype" className="block text-gray-800 font-semibold text-sm">
+                <label
+                  htmlFor="inputtype"
+                  className="block text-gray-800 font-semibold text-sm"
+                >
                   Esquema
                 </label>
                 <AceEditor
@@ -125,7 +151,7 @@ function App() {
                     showLineNumbers: true,
                     tabSize: 2,
                   }}
-                  style={{ width: '100%', height: '200px' }}
+                  style={{ width: "100%", height: "200px" }}
                 />
               </div>
             </div>
@@ -156,7 +182,9 @@ function App() {
                 <button onClick={copyResponse} className="btn">
                   Copiar Json
                 </button>
-                <button onClick={downloadResponse} className="btn ml-1">Descargar Json</button>
+                <button onClick={downloadResponse} className="btn ml-1">
+                  Descargar Json
+                </button>
               </div>
               <SyntaxHighlighter language="javascript" style={tomorrowNight}>
                 {response}
@@ -170,7 +198,6 @@ function App() {
         </div>
       </div>
     </div>
-    
   );
 }
 
