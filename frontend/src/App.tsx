@@ -9,8 +9,16 @@ import AceEditor from 'react-ace';
 
 function App() {
   const [loading, setLoading] = useState(false);
-  const [schema, setSchema] = useState('{"name": "string", "age": "integer"}');
-  const [count, setCount] = useState(10); // Tipo específico removido para evitar errores de compilación en JS
+  const [schema, setSchema] = useState(`
+  {
+    "ID": "number", 
+    "name": "string",
+    "lastName": "string=>A",
+    "age": "integer",
+    "date-birthday": "date>2000"
+  }
+    `);
+  const [count, setCount] = useState(2); // Tipo específico removido para evitar errores de compilación en JS
   const [response, setResponse] = useState<null | String>(null);
 
   const handleGenerateData = async () => {

@@ -19,7 +19,7 @@ export const ExampleCode: React.FC = () => {
   const [codeString, setCodeString] = useState<string>(`// Comando curl para hacer la misma solicitud:
 // curl -X POST https://datagenia.onrender.com/generate_data \\
 // -H "Content-Type: application/json" \\
-// -d '{"schema": {"name": "string", "age": "integer"}, "count": 10, "type": "json"}'
+// -d '{"schema": {"ID": "number","name": "string","lastName": "string=>A","age": "integer","date-birthday": "date>2000"}, "count": 10, "type": "json"}'
 
 const url: string = 'https://datagenia.onrender.com/generate_data';
 const data: Data = {
